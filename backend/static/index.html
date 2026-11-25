@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NeuroMRI | پژوهش MRI مغز</title>
+<style>
+:root{--bg:#0b1220;--card:#121e31;--muted:#a9b8cc;--text:#f4f7fb;--accent:#64d6c5;--line:#263750}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(140deg,#0b1220,#14243a);color:var(--text);font-family:Tahoma,Arial,sans-serif;min-height:100vh}
+.wrap{max-width:980px;margin:auto;padding:28px 18px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px}.brand{font-size:22px;font-weight:800}.pill{color:var(--accent);font-size:12px;border:1px solid #326c70;border-radius:20px;padding:7px 12px}
+h1{font-size:clamp(27px,5vw,42px);margin:35px 0 10px}.lead{color:var(--muted);line-height:1.9;max-width:760px}.card{background:rgba(18,30,49,.94);border:1px solid var(--line);border-radius:18px;padding:24px;margin-top:22px;box-shadow:0 18px 55px #0003}
+label{display:block;margin-bottom:12px;font-weight:bold}.drop{border:2px dashed #45627e;border-radius:14px;padding:28px;text-align:center;background:#0e1929}.drop input{max-width:100%;margin-top:15px}
+button{background:var(--accent);color:#09202a;border:0;border-radius:10px;padding:12px 22px;font-weight:bold;cursor:pointer;margin-top:15px}button:disabled{opacity:.5;cursor:wait}
+.note{background:#302817;border:1px solid #77602c;color:#ffe8b0;padding:14px;border-radius:12px;line-height:1.8;margin-top:18px;font-size:13px}
+.result{white-space:pre-wrap;line-height:1.9;color:#dce8f5}.status{color:var(--muted);font-size:13px;margin-top:12px}.lang{background:transparent;border:1px solid #45627e;color:var(--text);margin:0;padding:8px 12px}
+footer{color:#8295ac;font-size:12px;text-align:center;margin:28px}
+[dir=ltr] body{text-align:left}
+</style>
+</head>
+<body><div class="wrap">
+<div class="top"><div class="brand">🧠 NeuroMRI <span class="pill" data-i="badge">نسخه پژوهشی</span></div><button class="lang" id="lang">English</button></div>
+<h1 data-i="title">پژوهش هوشمند تصاویر MRI مغز</h1>
+<p class="lead" data-i="lead">بارگذاری تصویر برای بررسی پژوهشی و آزمایشی. این سامانه تنها پس از نصب مدل آموزش‌دیده، خروجی آزمایشی ارائه می‌کند.</p>
+<div class="card">
+<label data-i="upload">انتخاب تصویر MRI</label>
+<div class="drop"><div data-i="formats">فرمت‌های مجاز: PNG، JPG، DICOM و NIfTI — حداکثر ۲۵ مگابایت</div>
+<input type="file" id="file" accept=".png,.jpg,.jpeg,.dcm,.nii,.nii.gz"></div>
+<button id="go" data-i="analyze">بارگذاری و تحلیل پژوهشی</button>
+<div class="status" id="status"></div>
+</div>
+<div class="card"><h3 data-i="output">خروجی سامانه</h3><div class="result" id="result" data-i="waiting">هنوز فایلی ارسال نشده است.</div></div>
+<div class="note" data-i="warning">هشدار مهم: این پروژه نمونه تحقیقاتی است، ابزار تشخیص پزشکی نیست و نباید برای تصمیم‌گیری درمانی یا تشخیص آلزایمر استفاده شود. نتیجه احتمالی مدل جایگزین نظر متخصص نیست. فقط داده‌های مجاز و بی‌نام‌سازی‌شده را بارگذاری کنید.</div>
+<footer>NeuroMRI Research Prototype · No clinical use</footer>
+</div>
+<script>
+const dict={
+fa:{badge:"نسخه پژوهشی",title:"پژوهش هوشمند تصاویر MRI مغز",lead:"بارگذاری تصویر برای بررسی پژوهشی و آزمایشی. این سامانه تنها پس از نصب مدل آموزش‌دیده، خروجی آزمایشی ارائه می‌کند.",upload:"انتخاب تصویر MRI",formats:"فرمت‌های مجاز: PNG، JPG، DICOM و NIfTI — حداکثر ۲۵ مگابایت",analyze:"بارگذاری و تحلیل پژوهشی",output:"خروجی سامانه",waiting:"هنوز فایلی ارسال نشده است.",warning:"هشدار مهم: این پروژه نمونه تحقیقاتی است، ابزار تشخیص پزشکی نیست و نباید برای تصمیم‌گیری درمانی یا تشخیص آلزایمر استفاده شود. نتیجه احتمالی مدل جایگزین نظر متخصص نیست. فقط داده‌های مجاز و بی‌نام‌سازی‌شده را بارگذاری کنید.",busy:"در حال پردازش…",choose:"لطفاً ابتدا یک فایل انتخاب کنید.",done:"پاسخ سامانه:",error:"خطا:"},
+en:{badge:"Research prototype",title:"AI-assisted Brain MRI Research",lead:"Upload an image for experimental research analysis. The system returns experimental model output only after a trained checkpoint is installed.",upload:"Select brain MRI",formats:"Accepted: PNG, JPG, DICOM and NIfTI — maximum 25 MB",analyze:"Upload & run research analysis",output:"System output",waiting:"No file submitted yet.",warning:"Important: This is a research prototype, not a medical diagnostic tool. Do not use it to diagnose Alzheimer's or make treatment decisions. Model output cannot replace specialist judgment. Upload only authorized, de-identified data.",busy:"Processing…",choose:"Please choose a file first.",done:"System response:",error:"Error:"}
+};
+let current="fa";const $=id=>document.getElementById(id);
+function setLang(l){current=l;document.documentElement.lang=l;document.documentElement.dir=l==="fa"?"rtl":"ltr";document.querySelectorAll("[data-i]").forEach(e=>e.textContent=dict[l][e.dataset.i]);$("lang").textContent=l==="fa"?"English":"فارسی"}
+$("lang").onclick=()=>setLang(current==="fa"?"en":"fa");
+$("go").onclick=async()=>{const f=$("file").files[0];if(!f){$("status").textContent=dict[current].choose;return}
+$("go").disabled=true;$("status").textContent=dict[current].busy;$("result").textContent="";
+try{const fd=new FormData();fd.append("file",f);const r=await fetch("/api/analyze",{method:"POST",body:fd});const data=await r.json();if(!r.ok)throw new Error(data.detail||"Request failed");
+let msg=data.message||data.message_en||JSON.stringify(data,null,2);
+if(data.scores){msg=(current==="fa"?"امتیازهای آزمایشی مدل:\n":"Experimental model scores:\n")+JSON.stringify(data.scores,null,2)+"\n\n"+data.warning}
+$("result").textContent=dict[current].done+"\n"+msg;$("status").textContent="";
+}catch(e){$("result").textContent=dict[current].error+" "+e.message;$("status").textContent=""}finally{$("go").disabled=false}};
+</script></body></html>
